@@ -18,7 +18,7 @@ class Game {
     this.support = new Support();
     this.timer = new Timer(this.$TIMER);
     this.score = new Score(this.$SCORE);
-    this.map = new Map(this.$MAP, this.MATRIX_WIDTH, this.MATRIX_HEIGHT);
+    this.map = new Map(this.$MAP, this.MAP_WIDTH, this.MAP_HEIGHT);
 
     this.isPaused = false;
     this.canMove = true;
