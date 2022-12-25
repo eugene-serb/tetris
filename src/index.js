@@ -1,5 +1,7 @@
 ﻿'use strict';
 
+import Timer from '@/timer.js';
+
 class Game {
   constructor() {
     this.#DOMs();
@@ -10,6 +12,8 @@ class Game {
   }
 
   #start() {
+    this.timer = new Timer(this.$TIMER);
+
     this.isPaused = false;
     this.canMove = true;
 
@@ -26,6 +30,7 @@ class Game {
   }
 
   #draw() {
+    this.timer.draw();
   }
 
   #eventHandler() {
