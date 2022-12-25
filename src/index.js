@@ -1,7 +1,9 @@
 ﻿'use strict';
 
+import Support from '@/support.js';
 import Timer from '@/timer.js';
 import Score from '@/score.js';
+import Map from '@/map.js';
 
 class Game {
   constructor() {
@@ -13,8 +15,10 @@ class Game {
   }
 
   #start() {
+    this.support = new Support();
     this.timer = new Timer(this.$TIMER);
     this.score = new Score(this.$SCORE);
+    this.map = new Map(this.$MAP, this.MATRIX_WIDTH, this.MATRIX_HEIGHT);
 
     this.isPaused = false;
     this.canMove = true;
@@ -34,16 +38,19 @@ class Game {
   #draw() {
     this.timer.draw();
     this.score.draw();
+    this.map.draw();
   }
 
   #eventHandler() {
   }
 
-  #configurations = () => {
+  #configurations() {
     this.MATRIX_WIDTH = 10;
     this.MATRIX_HEIGHT = 24;
-    this.SPEED_RATE = 1000;
-  };
+    this.MAP_WIDTH = 10;
+    this.MAP_HEIGHT = 20;
+    this.SPEED_RATE = 50;
+  }
 
   #DOMs() {
     this.$MAP = document.querySelector('#map');
