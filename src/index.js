@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 import Timer from '@/timer.js';
+import Score from '@/score.js';
 
 class Game {
   constructor() {
@@ -13,6 +14,7 @@ class Game {
 
   #start() {
     this.timer = new Timer(this.$TIMER);
+    this.score = new Score(this.$SCORE);
 
     this.isPaused = false;
     this.canMove = true;
@@ -31,6 +33,7 @@ class Game {
 
   #draw() {
     this.timer.draw();
+    this.score.draw();
   }
 
   #eventHandler() {
@@ -57,13 +60,13 @@ class Game {
     window.addEventListener('keydown', (e) => {
       if (this.canMove === true) {
         if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
-          console.log('keydown', e.code);
+          // Rotate
         } else if (e.code === 'ArrowUp' || e.code === 'KeyW') {
-          console.log('keydown', e.code);
+          // to Left
         } else if (e.code === 'ArrowRight' || e.code === 'KeyD') {
-          console.log('keydown', e.code);
+          // to Rigth
         } else if (e.code === 'ArrowDown' || e.code === 'KeyS') {
-          console.log('keydown', e.code);
+          // Fast move to down
         }
       }
 

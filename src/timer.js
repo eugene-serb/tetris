@@ -7,8 +7,6 @@ export class Timer {
 
     this.timeStart = Date.now();
     this.timeNow = this.timeStart;
-
-    this.draw();
   }
 
   draw() {
