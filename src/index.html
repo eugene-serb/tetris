@@ -76,11 +76,61 @@
 <body>
   <main class="page container">
     <h1 class="visually-hidden">Eugene Serb – Tetris</h1>
-    <section class="post">
-      <h2 class="post__header">Tetris</h2>
-      <div class="tetris">
+    <div class="tetris">
+      <div id="map" class="tetris__map-wrapper"></div>
+      <div class="tetris__right-column">
+        <h2 class="tetris__title">Tetris</h2>
+        <div class="tetris__game-info">
+          <span class="tetris__dialog">Let's have fun!</span>
+          <div class="tetris__banner">
+            <span id="score" class="tetris__score">Score: 0</span>
+            <span id="timer" class="tetris__timer">Time: 00:00</span>
+          </div>
+          <div class="tetris__controls">
+            <div>
+              <span>Move – </span>
+              <kbd>A</kbd>
+              <kbd>S</kbd>
+              <kbd>D</kbd>
+              <span>and </span>
+              <kbd>↓</kbd>
+              <kbd>←</kbd>
+              <kbd>→</kbd>
+            </div>
+            <div>
+              <span>Rotate – </span>
+              <kbd>W</kbd>
+              <span>and </span>
+              <kbd>↑</kbd>
+            </div>
+            <div>
+              <span>Restart – </span>
+              <kbd>R</kbd>
+            </div>
+            <div>
+              <span>Pause – </span>
+              <kbd>P</kbd>
+            </div>
+          </div>
+        </div>
       </div>
-    </section>
+      <div class="tetris__left-column">
+        <div class="tetris__rating">
+          <h3>Top players:</h3>
+          <table class="table_emerald">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Score</th>
+                <th>Name</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="rating"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </main>
 
   <footer class="footer">
