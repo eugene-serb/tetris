@@ -4,6 +4,8 @@ import Support from '@/support.js';
 import Timer from '@/timer.js';
 import Score from '@/score.js';
 import Map from '@/map.js';
+import Matrix from '@/matrix.js';
+import Tetromino from '@/tetromino.js';
 
 class Game {
   constructor() {
@@ -14,14 +16,36 @@ class Game {
     this.#start();
   }
 
+  generateTetromino() {
+    return new Tetromino({
+      type: this.support.getRandomInteger(0, 8),
+      color: this.support.getRandomInteger(0, 8),
+      column: this.support.getRandomInteger(0, 10),
+    });
+  }
+
   #start() {
+    this.matrixState = new Matrix({
+      width: this.MATRIX_WIDTH,
+      height: this.MATRIX_HEIGHT,
+    });
+    this.matrixRender = this.matrixState.clone();
+    this.matrixDraw = this.matrixRender.crop([[0, 4], [10, 24]]);
+
+    this.map = new Map(this.$MAP, this.matrixDraw);
     this.support = new Support();
     this.timer = new Timer(this.$TIMER);
     this.score = new Score(this.$SCORE);
-    this.map = new Map(this.$MAP, this.MAP_WIDTH, this.MAP_HEIGHT);
 
     this.isPaused = false;
+    this.isSettled = false;
     this.canMove = true;
+
+    this.tetromino = new Tetromino({
+      type: this.support.getRandomInteger(0, 8),
+      color: this.support.getRandomInteger(0, 8),
+      column: this.support.getRandomInteger(0, 10),
+    });
 
     this.interval = setInterval(this.#eventLoop.bind(this), this.SPEED_RATE);
   }
@@ -33,15 +57,28 @@ class Game {
   }
 
   #update() {
+    this.matrixRender = this.matrixState.clone();
+    this.tetromino.row--;
   }
 
   #draw() {
+    this.matrixDraw = this.matrixRender.crop([[0, 4], [10, 24]]);
+    this.map.matrix = this.matrixDraw;
+
     this.timer.draw();
     this.score.draw();
     this.map.draw();
   }
 
   #eventHandler() {
+    if (this.tetromino.row === 0) {
+      this.settled = true;
+    }
+
+    if (this.settled) {
+      this.tetromino = this.generateTetromino();
+      this.settled = false;
+    }
   }
 
   #configurations() {
@@ -49,7 +86,7 @@ class Game {
     this.MATRIX_HEIGHT = 24;
     this.MAP_WIDTH = 10;
     this.MAP_HEIGHT = 20;
-    this.SPEED_RATE = 50;
+    this.SPEED_RATE = 500;
   }
 
   #DOMs() {
