@@ -79,13 +79,15 @@ export class Matrix {
       this.matrix[0].length
     );
 
-    figure.forEach((row) => {
-      row.forEach((cell) => {
-        result[x][y] = cell;
-        y++;
-      });
-      x++;
-    });
+    let rx = x;
+    for (let i = 0; i < figure.length; i++) {
+      let ry = y;
+      for (let j = 0; j < figure.length; j++) {
+        result[rx][ry] = figure[i][j];
+        ry++;
+      }
+      rx++;
+    }
 
     return result;
   }

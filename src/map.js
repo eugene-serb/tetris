@@ -24,7 +24,7 @@ export class Map {
             x * this.cellWidth,
             y * this.cellHeight,
             this.cellWidth,
-            this.cellHeight
+            this.cellHeight,
           );
         }
       }

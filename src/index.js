@@ -58,12 +58,25 @@ class Game {
 
   #update() {
     this.matrixRender = this.matrixState.clone();
+
+    const figure = JSON.parse(JSON.stringify(this.tetromino.matrix));
+    const x = this.tetromino.column;
+    const y = this.tetromino.row;
+    const matrix = this.matrixRender.inject(figure, x, y);
+
+    this.matrixRender = new Matrix({ matrix });
+
     this.tetromino.row--;
   }
 
   #draw() {
-    this.matrixDraw = this.matrixRender.crop([[0, 4], [10, 24]]);
-    this.map.matrix = this.matrixDraw;
+    this.matrixDraw = new Matrix({
+      matrix: this.matrixRender.crop([[0, 0], [10, 20]]),
+    });
+
+    this.matrixDraw.matrix = this.matrixDraw.reflectY();
+
+    this.map.matrix = this.matrixDraw.matrix;
 
     this.timer.draw();
     this.score.draw();
