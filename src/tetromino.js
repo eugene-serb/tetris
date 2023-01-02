@@ -1,51 +1,20 @@
 'use strict';
 
-const tetrominos = [
-  [
-    [1, 1, 1, 1],
-  ],
-  [
-    [1, 0, 0],
-    [1, 1, 1],
-  ],
-  [
-    [0, 0, 1],
-    [1, 1, 1],
-  ],
-  [
-    [1, 1],
-    [1, 1],
-  ],
-  [
-    [0, 1, 1],
-    [1, 1, 0],
-  ],
-  [
-    [1, 1, 0],
-    [0, 1, 1],
-  ],
-  [
-    [0, 1, 0],
-    [1, 1, 1],
-  ],
-];
-
-const colors = [
-  'cyan',
-  'yellow',
-  'purple',
-  'green',
-  'red',
-  'blue',
-  'orange',
-];
+import tetrominos from '@/assets/tetrominos.json';
+import colors from '@/assets/colors.json';
+import Matrix from '@/matrix.js';
 
 export class Tetromino {
-  constructor({ type, color, column = 5, row = 21 }) {
-    this.matrix = tetrominos[type];
+  constructor({ type = null, color = null, column = 5, row = 21 }) {
+    this.type = type;
     this.color = colors[color];
     this.column = column;
     this.row = row;
+    this.matrix = this.generate();
+  }
+
+  generate() {
+    return new Matrix({ matrix: tetrominos[this.type] });
   }
 }
 

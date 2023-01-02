@@ -1,11 +1,11 @@
 ﻿'use strict';
 
-import Support from '@/support.js';
 import Timer from '@/timer.js';
 import Score from '@/score.js';
 import Map from '@/map.js';
 import Matrix from '@/matrix.js';
 import Tetromino from '@/tetromino.js';
+import { getRandomInteger } from '@/support.js';
 
 class Game {
   constructor() {
@@ -16,10 +16,10 @@ class Game {
     this.#start();
   }
 
-  generateTetromino() {
+  getTetromino() {
     return new Tetromino({
-      type: this.support.getRandomInteger(0, 7),
-      color: this.support.getRandomInteger(0, 7),
+      type: getRandomInteger(0, 7),
+      color: getRandomInteger(0, 7),
     });
   }
 
@@ -33,7 +33,6 @@ class Game {
       [[0, 0], [this.MAP_WIDTH, this.MAP_HEIGHT]]);
 
     this.map = new Map(this.$MAP, this.matrixDraw);
-    this.support = new Support();
     this.timer = new Timer(this.$TIMER);
     this.score = new Score(this.$SCORE);
 
@@ -41,7 +40,7 @@ class Game {
     this.isSettled = false;
     this.canMove = true;
 
-    this.tetromino = this.generateTetromino();
+    this.tetromino = this.getTetromino();
 
     this.interval = setInterval(this.#eventLoop.bind(this), this.SPEED_RATE);
   }
@@ -63,7 +62,7 @@ class Game {
     });
 
     const matrix = this.matrixRender.insert(
-      this.tetromino.matrix,
+      this.tetromino.matrix.matrix,
       this.tetromino.column,
       this.tetromino.row,
     );
@@ -86,7 +85,7 @@ class Game {
   #eventHandler() {
     if (this.tetromino.row === 0) {
       const newState = this.matrixState.insert(
-        this.tetromino.matrix,
+        this.tetromino.matrix.matrix,
         this.tetromino.column,
         this.tetromino.row,
       );
@@ -96,7 +95,7 @@ class Game {
     }
 
     if (this.settled) {
-      this.tetromino = this.generateTetromino();
+      this.tetromino = this.getTetromino();
       this.settled = false;
     }
   }
