@@ -124,12 +124,16 @@ class Game {
       if (this.canMove === true) {
         if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
           this.tetromino.toLeft();
+          this.#draw();
         } else if (e.code === 'ArrowUp' || e.code === 'KeyW') {
           this.tetromino.rotate();
+          this.#draw();
         } else if (e.code === 'ArrowRight' || e.code === 'KeyD') {
           this.tetromino.toRight();
+          this.#draw();
         } else if (e.code === 'ArrowDown' || e.code === 'KeyS') {
           this.tetromino.toDown();
+          this.#draw();
         }
       }
 
