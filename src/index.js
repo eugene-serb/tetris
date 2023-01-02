@@ -58,12 +58,14 @@ class Game {
   }
 
   #render() {
-    this.matrixRender = this.matrixState.clone();
+    this.matrixRender = new Matrix({
+      matrix: this.matrixState.copy()
+    });
 
     const matrix = this.matrixRender.insert(
       this.tetromino.matrix,
       this.tetromino.column,
-      this.tetromino.row
+      this.tetromino.row,
     );
 
     this.matrixRender = new Matrix({ matrix });
@@ -83,6 +85,13 @@ class Game {
 
   #eventHandler() {
     if (this.tetromino.row === 0) {
+      const newState = this.matrixState.insert(
+        this.tetromino.matrix,
+        this.tetromino.column,
+        this.tetromino.row,
+      );
+      this.matrixState = new Matrix({ matrix: newState });
+
       this.settled = true;
     }
 

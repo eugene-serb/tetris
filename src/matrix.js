@@ -74,15 +74,12 @@ export class Matrix {
   }
 
   insert(figure, x, y) {
-    const result = this.generate(
-      this.matrix.length,
-      this.matrix[0].length
-    );
+    const result = this.copy();
 
     let rx = x;
     for (let i = 0; i < figure.length; i++) {
       let ry = y;
-      for (let j = 0; j < figure.length; j++) {
+      for (let j = 0; j < figure[0].length; j++) {
         result[rx][ry] = figure[i][j];
         ry++;
       }
