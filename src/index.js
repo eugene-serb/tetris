@@ -62,7 +62,7 @@ class Game {
     });
 
     const matrix = this.matrixRender.insert(
-      this.tetromino.matrix.matrix,
+      this.tetromino.matrix.value,
       this.tetromino.column,
       this.tetromino.row,
     );
@@ -75,7 +75,7 @@ class Game {
       matrix: this.matrixRender.crop([[0, 0], [this.MAP_WIDTH, this.MAP_HEIGHT]]),
     });
     this.matrixDraw.matrix = this.matrixDraw.reflectY();
-    this.map.matrix = this.matrixDraw.matrix;
+    this.map.matrix = this.matrixDraw.value;
 
     this.timer.draw();
     this.score.draw();
@@ -85,7 +85,7 @@ class Game {
   #eventHandler() {
     if (this.tetromino.row === 0) {
       const newState = this.matrixState.insert(
-        this.tetromino.matrix.matrix,
+        this.tetromino.matrix.value,
         this.tetromino.column,
         this.tetromino.row,
       );
@@ -105,7 +105,7 @@ class Game {
     this.MATRIX_HEIGHT = 25;
     this.MAP_WIDTH = 10;
     this.MAP_HEIGHT = 20;
-    this.SPEED_RATE = 500;
+    this.SPEED_RATE = 250;
   }
 
   #DOMs() {
@@ -123,13 +123,13 @@ class Game {
     window.addEventListener('keydown', (e) => {
       if (this.canMove === true) {
         if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
-          // Rotate
+          this.tetromino.toLeft();
         } else if (e.code === 'ArrowUp' || e.code === 'KeyW') {
-          // to Left
+          this.tetromino.rotate();
         } else if (e.code === 'ArrowRight' || e.code === 'KeyD') {
-          // to Rigth
+          this.tetromino.toRight();
         } else if (e.code === 'ArrowDown' || e.code === 'KeyS') {
-          // Fast move to down
+          this.tetromino.toDown();
         }
       }
 

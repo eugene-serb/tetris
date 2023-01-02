@@ -16,6 +16,22 @@ export class Tetromino {
   generate() {
     return new Matrix({ matrix: tetrominos[this.type] });
   }
+
+  toLeft() {
+    this.column--;
+  }
+
+  toRight() {
+    this.column++;
+  }
+
+  toDown() {
+    this.row--;
+  }
+
+  rotate() {
+    this.matrix = new Matrix({ matrix: this.matrix.rotateRight() })
+  }
 }
 
 export default Tetromino;

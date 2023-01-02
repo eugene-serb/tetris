@@ -5,11 +5,11 @@ export class Matrix {
     if (matrix) {
       this.width = matrix.length;
       this.height = matrix[0].length;
-      this.matrix = matrix;
+      this.value = matrix;
     } else {
       this.width = width;
       this.height = height;
-      this.matrix = this.generate(this.width, this.height);
+      this.value = this.generate(this.width, this.height);
     }
   }
 
@@ -28,13 +28,13 @@ export class Matrix {
 
   clone() {
     const result = this.generate(
-      this.matrix.length,
-      this.matrix[0].length
+      this.value.length,
+      this.value[0].length
     );
 
-    for (let x = 0; x < this.matrix.length; x++) {
-      for (let y = 0; y < this.matrix[x].length; y++) {
-        result[x][y] = this.matrix[x][y];
+    for (let x = 0; x < this.value.length; x++) {
+      for (let y = 0; y < this.value[x].length; y++) {
+        result[x][y] = this.value[x][y];
       }
     }
 
@@ -43,13 +43,13 @@ export class Matrix {
 
   copy() {
     const result = this.generate(
-      this.matrix.length,
-      this.matrix[0].length
+      this.value.length,
+      this.value[0].length
     );
 
-    for (let x = 0; x < this.matrix.length; x++) {
-      for (let y = 0; y < this.matrix[x].length; y++) {
-        result[x][y] = this.matrix[x][y];
+    for (let x = 0; x < this.value.length; x++) {
+      for (let y = 0; y < this.value[x].length; y++) {
+        result[x][y] = this.value[x][y];
       }
     }
 
@@ -66,7 +66,7 @@ export class Matrix {
       for (let y = 0; y < height; y++) {
         let x2 = coordinates[0][0] + x;
         let y2 = coordinates[0][1] + y;
-        result[x][y] = this.matrix[x2][y2];
+        result[x][y] = this.value[x2][y2];
       }
     }
 
@@ -95,25 +95,25 @@ export class Matrix {
 
   reflectY() {
     const result = this.generate(
-      this.matrix.length,
-      this.matrix[0].length
+      this.value.length,
+      this.value[0].length
     );
 
-    for (let x = 0; x < this.matrix.length; x++) {
-      result[x] = this.matrix[x].reverse();
+    for (let x = 0; x < this.value.length; x++) {
+      result[x] = this.value[x].reverse();
     }
 
     return result;
   }
 
   rotateLeft() {
-    const result = this.generate(this.matrix[0].length, this.matrix.length);
+    const result = this.generate(this.value[0].length, this.value.length);
 
-    for (let x = 0; x < this.matrix.length; x++) {
-      for (let y = 0; y < this.matrix[x].length; y++) {
-        let x2 = this.matrix[x].length - 1 - y;
+    for (let x = 0; x < this.value.length; x++) {
+      for (let y = 0; y < this.value[x].length; y++) {
+        let x2 = this.value[x].length - 1 - y;
         let y2 = x;
-        result[x2][y2] = this.matrix[x][y];
+        result[x2][y2] = this.value[x][y];
       }
     }
 
@@ -121,13 +121,13 @@ export class Matrix {
   }
 
   rotateRight() {
-    const result = this.generate(this.matrix[0].length, this.matrix.length);
+    const result = this.generate(this.value[0].length, this.value.length);
 
-    for (let x = 0; x < this.matrix.length; x++) {
-      for (let y = 0; y < this.matrix[x].length; y++) {
+    for (let x = 0; x < this.value.length; x++) {
+      for (let y = 0; y < this.value[x].length; y++) {
         let x2 = y;
-        let y2 = this.matrix.length - 1 - x;
-        result[x2][y2] = this.matrix[x][y];
+        let y2 = this.value.length - 1 - x;
+        result[x2][y2] = this.value[x][y];
       }
     }
 
