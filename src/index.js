@@ -18,9 +18,8 @@ class Game {
 
   generateTetromino() {
     return new Tetromino({
-      type: this.support.getRandomInteger(0, 8),
-      color: this.support.getRandomInteger(0, 8),
-      column: this.support.getRandomInteger(0, 10),
+      type: this.support.getRandomInteger(0, 7),
+      color: this.support.getRandomInteger(0, 7),
     });
   }
 
@@ -30,7 +29,8 @@ class Game {
       height: this.MATRIX_HEIGHT,
     });
     this.matrixRender = this.matrixState.clone();
-    this.matrixDraw = this.matrixRender.crop([[0, 4], [10, 24]]);
+    this.matrixDraw = this.matrixRender.crop(
+      [[0, 0], [this.MAP_WIDTH, this.MAP_HEIGHT]]);
 
     this.map = new Map(this.$MAP, this.matrixDraw);
     this.support = new Support();
@@ -41,41 +41,39 @@ class Game {
     this.isSettled = false;
     this.canMove = true;
 
-    this.tetromino = new Tetromino({
-      type: this.support.getRandomInteger(0, 8),
-      color: this.support.getRandomInteger(0, 8),
-      column: this.support.getRandomInteger(0, 10),
-    });
+    this.tetromino = this.generateTetromino();
 
     this.interval = setInterval(this.#eventLoop.bind(this), this.SPEED_RATE);
   }
 
   #eventLoop() {
     this.#update();
+    this.#render();
     this.#draw();
     this.#eventHandler();
   }
 
   #update() {
+    this.tetromino.row--;
+  }
+
+  #render() {
     this.matrixRender = this.matrixState.clone();
 
-    const figure = JSON.parse(JSON.stringify(this.tetromino.matrix));
-    const x = this.tetromino.column;
-    const y = this.tetromino.row;
-    const matrix = this.matrixRender.inject(figure, x, y);
+    const matrix = this.matrixRender.insert(
+      this.tetromino.matrix,
+      this.tetromino.column,
+      this.tetromino.row
+    );
 
     this.matrixRender = new Matrix({ matrix });
-
-    this.tetromino.row--;
   }
 
   #draw() {
     this.matrixDraw = new Matrix({
-      matrix: this.matrixRender.crop([[0, 0], [10, 20]]),
+      matrix: this.matrixRender.crop([[0, 0], [this.MAP_WIDTH, this.MAP_HEIGHT]]),
     });
-
     this.matrixDraw.matrix = this.matrixDraw.reflectY();
-
     this.map.matrix = this.matrixDraw.matrix;
 
     this.timer.draw();
@@ -96,7 +94,7 @@ class Game {
 
   #configurations() {
     this.MATRIX_WIDTH = 10;
-    this.MATRIX_HEIGHT = 24;
+    this.MATRIX_HEIGHT = 25;
     this.MAP_WIDTH = 10;
     this.MAP_HEIGHT = 20;
     this.SPEED_RATE = 500;

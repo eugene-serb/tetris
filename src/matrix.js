@@ -73,7 +73,7 @@ export class Matrix {
     return result;
   }
 
-  inject(figure, x, y) {
+  insert(figure, x, y) {
     const result = this.generate(
       this.matrix.length,
       this.matrix[0].length

@@ -2,8 +2,8 @@
 
 const tetrominos = [
   [
-    [0, 0, 0, 0],
     [1, 1, 1, 1],
+    [0, 0, 0, 0],
     [0, 0, 0, 0],
     [0, 0, 0, 0]
   ],
@@ -49,7 +49,7 @@ const colors = [
 ];
 
 export class Tetromino {
-  constructor({ type, color, column = 5, row = 20 }) {
+  constructor({ type, color, column = 5, row = 21 }) {
     this.matrix = tetrominos[type];
     this.color = colors[color];
     this.column = column;
