@@ -39,6 +39,50 @@ class Game {
     return true;
   }
 
+  rotate() {
+    if (this.isValidMove(
+      this.tetromino.matrix.value,
+      this.tetromino.column,
+      this.tetromino.row,
+    )) {
+      this.tetromino.rotate();
+      this.#draw();
+    }
+  }
+
+  moveToLeft() {
+    if (this.isValidMove(
+      this.tetromino.matrix.value,
+      this.tetromino.column - 1,
+      this.tetromino.row,
+    )) {
+      this.tetromino.toLeft();
+      this.#draw();
+    }
+  }
+
+  moveToRight() {
+    if (this.isValidMove(
+      this.tetromino.matrix.value,
+      this.tetromino.column + 1,
+      this.tetromino.row,
+    )) {
+      this.tetromino.toRight();
+      this.#draw();
+    }
+  }
+
+  moveToDown() {
+    if (this.isValidMove(
+      this.tetromino.matrix.value,
+      this.tetromino.column,
+      this.tetromino.row - 1,
+    )) {
+      this.tetromino.toDown();
+      this.#draw();
+    }
+  }
+
   #start() {
     this.matrixState = new Matrix({
       width: this.MATRIX_WIDTH,
@@ -140,41 +184,13 @@ class Game {
     window.addEventListener('keydown', (e) => {
       if (this.canMove === true) {
         if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
-          if (this.isValidMove(
-            this.tetromino.matrix.value,
-            this.tetromino.column - 1,
-            this.tetromino.row,
-          )) {
-            this.tetromino.toLeft();
-            this.#draw();
-          }
+          this.moveToLeft();
         } else if (e.code === 'ArrowUp' || e.code === 'KeyW') {
-          if (this.isValidMove(
-            this.tetromino.matrix.value,
-            this.tetromino.column,
-            this.tetromino.row,
-          )) {
-            this.tetromino.rotate();
-            this.#draw();
-          }
+          this.rotate();
         } else if (e.code === 'ArrowRight' || e.code === 'KeyD') {
-          if (this.isValidMove(
-            this.tetromino.matrix.value,
-            this.tetromino.column + 1,
-            this.tetromino.row,
-          )) {
-            this.tetromino.toRight();
-            this.#draw();
-          }
+          this.moveToRight();
         } else if (e.code === 'ArrowDown' || e.code === 'KeyS') {
-          if (this.isValidMove(
-            this.tetromino.matrix.value,
-            this.tetromino.column,
-            this.tetromino.row - 1,
-          )) {
-            this.tetromino.toDown();
-            this.#draw();
-          }
+          this.moveToDown();
         }
       }
 
