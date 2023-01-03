@@ -23,6 +23,24 @@ class Game {
     });
   }
 
+  insertTetromino(map, figure) {
+    const matrix = figure.matrix.value;
+    const toColumn = figure.column;
+    const toRow = figure.row;
+
+    const result = map;
+
+    for (let column = 0; column < matrix.length; column++) {
+      for (let row = 0; row < matrix[column].length; row++) {
+        if (matrix[column][row]) {
+          result[toColumn + column][toRow + row] = matrix[column][row];
+        }
+      }
+    }
+
+    return result;
+  }
+
   isValidMove(matrix, toColumn, toRow) {
     for (let column = 0; column < matrix.length; column++) {
       for (let row = 0; row < matrix[column].length; row++) {
@@ -113,16 +131,12 @@ class Game {
 
   #update() {
     this.matrixRender = new Matrix({
-      matrix: this.matrixState.copy()
+      matrix: this.matrixState.copy(),
     });
 
-    const matrix = this.matrixRender.insert(
-      this.tetromino.matrix.value,
-      this.tetromino.column,
-      this.tetromino.row,
-    );
-
-    this.matrixRender = new Matrix({ matrix });
+    this.matrixRender = new Matrix({
+      matrix: this.insertTetromino(this.matrixRender.copy(), this.tetromino),
+    });
   }
 
   #draw() {
@@ -143,13 +157,9 @@ class Game {
       this.tetromino.column,
       this.tetromino.row - 1,
     )) {
-      const newState = this.matrixState.insert(
-        this.tetromino.matrix.value,
-        this.tetromino.column,
-        this.tetromino.row,
-      );
-      this.matrixState = new Matrix({ matrix: newState });
-
+      this.matrixState = new Matrix({
+        matrix: this.insertTetromino(this.matrixState.copy(), this.tetromino),
+      });
       this.settled = true;
     } else {
       this.tetromino.row--;

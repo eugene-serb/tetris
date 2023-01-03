@@ -5,7 +5,8 @@ export class Matrix {
     if (matrix) {
       this.width = matrix.length;
       this.height = matrix[0].length;
-      this.value = matrix;
+      this.value = this.generate(this.width, this.height);
+      this.value = this.insert(matrix, 0, 0);
     } else {
       this.width = width;
       this.height = height;
