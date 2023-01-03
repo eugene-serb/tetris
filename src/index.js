@@ -18,8 +18,8 @@ class Game {
 
   getTetromino() {
     return new Tetromino({
-      type: getRandomInteger(0, 1),
-      color: getRandomInteger(0, 1),
+      type: getRandomInteger(0, 7),
+      color: getRandomInteger(0, 7),
     });
   }
 
