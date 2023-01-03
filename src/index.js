@@ -18,9 +18,37 @@ class Game {
 
   getTetromino() {
     return new Tetromino({
-      type: getRandomInteger(0, 7),
-      color: getRandomInteger(0, 7),
+      type: getRandomInteger(0, 1),
+      color: getRandomInteger(0, 1),
     });
+  }
+
+  cleanRows() {
+    let matrix = this.matrixState.copy();
+
+    for (let row = 0; row < matrix[0].length; row++) {
+      let streak = 0;
+
+      for (let column = 0; column < matrix.length; column++) {
+        if (matrix[column][row] === 1) streak++;
+      }
+
+      if (streak === 10) {
+        matrix = matrix.map((column) => {
+          return Array.prototype.concat(
+            column.slice(0, row),
+            column.slice(row + 1, column.length),
+            [0],
+          );
+        });
+        
+        this.score.increase(1);
+
+        row--;
+      }
+    }
+
+    this.matrixState = new Matrix({ matrix });
   }
 
   insertTetromino(map, figure) {
@@ -160,6 +188,7 @@ class Game {
       this.matrixState = new Matrix({
         matrix: this.insertTetromino(this.matrixState.copy(), this.tetromino),
       });
+      this.cleanRows();
       this.settled = true;
     } else {
       this.tetromino.row--;
