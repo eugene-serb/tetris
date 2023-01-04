@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-export class Map {
+export class Drawer {
   constructor(container, matrix) {
     this.$container = container;
     this.matrix = matrix;
@@ -74,4 +74,4 @@ export class Map {
   }
 }
 
-export default Map;
+export default Drawer;

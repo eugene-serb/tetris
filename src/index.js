@@ -2,7 +2,7 @@
 
 import Timer from '@/timer.js';
 import Score from '@/score.js';
-import Map from '@/map.js';
+import Drawer from '@/drawer.js';
 import Matrix from '@/matrix.js';
 import Tetromino from '@/tetromino.js';
 import { getRandomInteger } from '@/support.js';
@@ -155,7 +155,7 @@ class Game {
     this.matrixDraw = this.matrixRender.crop(
       [[0, 0], [this.MAP_WIDTH, this.MAP_HEIGHT]]);
 
-    this.map = new Map(this.$MAP, this.matrixDraw);
+    this.drawer = new Drawer(this.$MAP, this.matrixDraw);
     this.timer = new Timer(this.$TIMER);
     this.score = new Score(this.$SCORE);
 
@@ -193,11 +193,11 @@ class Game {
       empty: this.EMPTY_CELL,
     });
     this.matrixDraw.matrix = this.matrixDraw.reflectY();
-    this.map.matrix = this.matrixDraw.value;
+    this.drawer.matrix = this.matrixDraw.value;
 
     this.timer.draw();
     this.score.draw();
-    this.map.draw();
+    this.drawer.draw();
   }
 
   #eventHandler() {
