@@ -23,6 +23,14 @@ class Game {
     });
   }
 
+  checkEndGame() {
+    this.matrixState.value.forEach((column) => {
+      if (column[19]) {
+        this.isGameOver = true;
+      }
+    });
+  }
+
   cleanRows() {
     let matrix = this.matrixState.copy();
 
@@ -135,6 +143,8 @@ class Game {
   }
 
   #start() {
+    this.$DIALOG.innerHTML = 'Let\'s have fun!';
+
     this.matrixState = new Matrix({
       width: this.MATRIX_WIDTH,
       height: this.MATRIX_HEIGHT,
@@ -147,6 +157,7 @@ class Game {
     this.timer = new Timer(this.$TIMER);
     this.score = new Score(this.$SCORE);
 
+    this.isGameOver = false;
     this.isPaused = false;
     this.isSettled = false;
     this.canMove = true;
@@ -185,6 +196,13 @@ class Game {
   }
 
   #eventHandler() {
+    this.checkEndGame();
+
+    if (this.isGameOver) {
+      this.$DIALOG.innerHTML = 'Game Over!';
+      clearInterval(this.interval);
+    }
+
     if (!this.isValidMove(
       this.tetromino.matrix.value,
       this.tetromino.column,
@@ -215,6 +233,7 @@ class Game {
 
   #DOMs() {
     this.$MAP = document.querySelector('#map');
+    this.$DIALOG = document.querySelector('#dialog');
     this.$SCORE = document.querySelector('#score');
     this.$TIMER = document.querySelector('#timer');
     this.$RATING = document.querySelector('#rating');
@@ -226,15 +245,17 @@ class Game {
 
   #keyboard() {
     window.addEventListener('keydown', (e) => {
-      if (this.canMove === true) {
-        if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
-          this.moveToLeft();
-        } else if (e.code === 'ArrowUp' || e.code === 'KeyW') {
-          this.rotate();
-        } else if (e.code === 'ArrowRight' || e.code === 'KeyD') {
-          this.moveToRight();
-        } else if (e.code === 'ArrowDown' || e.code === 'KeyS') {
-          this.moveToDown();
+      if (!this.isGameOver) {
+        if (this.canMove === true) {
+          if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
+            this.moveToLeft();
+          } else if (e.code === 'ArrowUp' || e.code === 'KeyW') {
+            this.rotate();
+          } else if (e.code === 'ArrowRight' || e.code === 'KeyD') {
+            this.moveToRight();
+          } else if (e.code === 'ArrowDown' || e.code === 'KeyS') {
+            this.moveToDown();
+          }
         }
       }
 
@@ -244,12 +265,14 @@ class Game {
       }
 
       if (e.code === 'KeyP') {
-        if (this.isPaused === true) {
-          this.interval = setInterval(this.#eventLoop.bind(this), this.SPEED_RATE);
-          this.isPaused = false;
-        } else {
-          clearInterval(this.interval);
-          this.isPaused = true;
+        if (!this.isGameOver) {
+          if (this.isPaused === true) {
+            this.interval = setInterval(this.#eventLoop.bind(this), this.SPEED_RATE);
+            this.isPaused = false;
+          } else {
+            clearInterval(this.interval);
+            this.isPaused = true;
+          }
         }
       }
     });
