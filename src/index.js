@@ -72,12 +72,14 @@ class Game {
   isValidMove(matrix, toColumn, toRow) {
     for (let column = 0; column < matrix.length; column++) {
       for (let row = 0; row < matrix[column].length; row++) {
-        if (matrix[column][row] && (
-          toRow + row < 0 ||
+        if (toColumn + column >= this.matrixState.value.length ||
           toRow + row >= this.matrixState.value[0].length ||
-          toColumn + column >= this.matrixState.value.length ||
-          this.matrixState.value[toColumn + column][toRow + row]
-        )) {
+          toColumn + column < 0 || toRow + row < 0) {
+          return false;
+        }
+
+        if (matrix[column][row] &&
+          this.matrixState.value[toColumn + column][toRow + row]) {
           return false;
         }
       }
@@ -86,13 +88,16 @@ class Game {
   }
 
   rotate() {
+    this.tetromino.rotateRight();
+
     if (this.isValidMove(
       this.tetromino.matrix.value,
       this.tetromino.column,
       this.tetromino.row,
     )) {
-      this.tetromino.rotate();
       this.#draw();
+    } else {
+      this.tetromino.rotateLeft();
     }
   }
 

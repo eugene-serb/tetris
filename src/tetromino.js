@@ -29,7 +29,11 @@ export class Tetromino {
     this.row--;
   }
 
-  rotate() {
+  rotateLeft() {
+    this.matrix = new Matrix({ matrix: this.matrix.rotateLeft() })
+  }
+
+  rotateRight() {
     this.matrix = new Matrix({ matrix: this.matrix.rotateRight() })
   }
 }
