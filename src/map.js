@@ -13,20 +13,16 @@ export class Map {
 
   draw() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.context.fillStyle = this.color_canvas;
-    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    this.context.fillStyle = this.color_cells;
 
     for (let x = 0; x < this.mapWidth; x++) {
       for (let y = 0; y < this.mapHeight; y++) {
-        if (this.matrix[x][y] !== 0) {
-          this.context.fillRect(
-            x * this.cellWidth,
-            y * this.cellHeight,
-            this.cellWidth,
-            this.cellHeight,
-          );
-        }
+        this.context.fillStyle = this.matrix[x][y].color[this.theme];
+        this.context.fillRect(
+          x * this.cellWidth,
+          y * this.cellHeight,
+          this.cellWidth,
+          this.cellHeight,
+        );
       }
     }
   }
@@ -69,11 +65,9 @@ export class Map {
 
   #updateColours(media) {
     if (media.matches) {
-      this.color_canvas = '#055159';
-      this.color_cells = '#0DC4D9';
+      this.theme = 'dark';
     } else {
-      this.color_canvas = '#F5F5F5';
-      this.color_cells = '#0DC4D9';
+      this.theme = 'light';
     }
 
     this.draw();

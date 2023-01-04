@@ -5,16 +5,13 @@ import colors from '@/assets/colors.json';
 import Matrix from '@/matrix.js';
 
 export class Tetromino {
-  constructor({ type = null, color = null, column = 5, row = 21 }) {
+  constructor({ type = null, color = null, column = 5, row = 21, empty = null }) {
     this.type = type;
     this.color = colors[color];
     this.column = column;
     this.row = row;
-    this.matrix = this.generate();
-  }
-
-  generate() {
-    return new Matrix({ matrix: tetrominos[this.type] });
+    this.empty = empty;
+    this.matrix = this.#generate();
   }
 
   toLeft() {
@@ -35,6 +32,28 @@ export class Tetromino {
 
   rotateRight() {
     this.matrix = new Matrix({ matrix: this.matrix.rotateRight() })
+  }
+
+  #generate() {
+    return new Matrix({ matrix: this.#generateMatrix() });
+  }
+
+  #generateMatrix() {
+    return tetrominos[this.type].map((column) => {
+      return column.map((cell) => {
+        if (cell === 0) {
+          return this.empty;
+        } else {
+          return {
+            exist: true,
+            color: {
+              light: this.color.light,
+              dark: this.color.dark,
+            },
+          };
+        }
+      });
+    });
   }
 }
 

@@ -1,26 +1,28 @@
 'use strict';
 
 export class Matrix {
-  constructor({ width = null, height = null, matrix = null }) {
+  constructor({ width = null, height = null, empty = null, matrix = null }) {
     if (matrix) {
       this.width = matrix.length;
       this.height = matrix[0].length;
-      this.value = this.generate(this.width, this.height);
+      this.empty = empty;
+      this.value = this.generate(this.width, this.height, this.empty);
       this.value = this.insert(matrix, 0, 0);
     } else {
       this.width = width;
       this.height = height;
-      this.value = this.generate(this.width, this.height);
+      this.empty = empty;
+      this.value = this.generate(this.width, this.height, this.empty);
     }
   }
 
-  generate(width, height) {
+  generate(width, height, empty) {
     const result = new Array();
 
     for (let x = 0; x < width; x++) {
       result[x] = new Array();
       for (let y = 0; y < height; y++) {
-        result[x][y] = 0;
+        result[x][y] = empty;
       }
     }
 

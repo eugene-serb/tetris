@@ -20,12 +20,13 @@ class Game {
     return new Tetromino({
       type: getRandomInteger(0, 7),
       color: getRandomInteger(0, 7),
+      empty: this.EMPTY_CELL,
     });
   }
 
   checkEndGame() {
     this.matrixState.value.forEach((column) => {
-      if (column[19]) {
+      if (column[19].exist) {
         this.isGameOver = true;
       }
     });
@@ -38,7 +39,7 @@ class Game {
       let streak = 0;
 
       for (let column = 0; column < matrix.length; column++) {
-        if (matrix[column][row] === 1) streak++;
+        if (matrix[column][row].exist) streak++;
       }
 
       if (streak === 10) {
@@ -46,7 +47,7 @@ class Game {
           return Array.prototype.concat(
             column.slice(0, row),
             column.slice(row + 1, column.length),
-            [0],
+            [this.EMPTY_CELL],
           );
         });
         
@@ -56,7 +57,7 @@ class Game {
       }
     }
 
-    this.matrixState = new Matrix({ matrix });
+    this.matrixState = new Matrix({ matrix, empty: this.EMPTY_CELL });
   }
 
   insertTetromino(map, figure) {
@@ -68,7 +69,7 @@ class Game {
 
     for (let column = 0; column < matrix.length; column++) {
       for (let row = 0; row < matrix[column].length; row++) {
-        if (matrix[column][row]) {
+        if (matrix[column][row].exist) {
           result[toColumn + column][toRow + row] = matrix[column][row];
         }
       }
@@ -86,8 +87,8 @@ class Game {
           return false;
         }
 
-        if (matrix[column][row] &&
-          this.matrixState.value[toColumn + column][toRow + row]) {
+        if (matrix[column][row].exist &&
+          this.matrixState.value[toColumn + column][toRow + row].exist) {
           return false;
         }
       }
@@ -148,6 +149,7 @@ class Game {
     this.matrixState = new Matrix({
       width: this.MATRIX_WIDTH,
       height: this.MATRIX_HEIGHT,
+      empty: this.EMPTY_CELL,
     });
     this.matrixRender = this.matrixState.clone();
     this.matrixDraw = this.matrixRender.crop(
@@ -176,16 +178,19 @@ class Game {
   #update() {
     this.matrixRender = new Matrix({
       matrix: this.matrixState.copy(),
+      empty: this.EMPTY_CELL,
     });
 
     this.matrixRender = new Matrix({
       matrix: this.insertTetromino(this.matrixRender.copy(), this.tetromino),
+      empty: this.EMPTY_CELL,
     });
   }
 
   #draw() {
     this.matrixDraw = new Matrix({
       matrix: this.matrixRender.crop([[0, 0], [this.MAP_WIDTH, this.MAP_HEIGHT]]),
+      empty: this.EMPTY_CELL,
     });
     this.matrixDraw.matrix = this.matrixDraw.reflectY();
     this.map.matrix = this.matrixDraw.value;
@@ -210,6 +215,7 @@ class Game {
     )) {
       this.matrixState = new Matrix({
         matrix: this.insertTetromino(this.matrixState.copy(), this.tetromino),
+        empty: this.EMPTY_CELL,
       });
       this.cleanRows();
       this.settled = true;
@@ -229,6 +235,13 @@ class Game {
     this.MAP_WIDTH = 10;
     this.MAP_HEIGHT = 20;
     this.SPEED_RATE = 250;
+    this.EMPTY_CELL = {
+      exist: false,
+      color: {
+        light: '#F5F5F5',
+        dark: '#055159',
+      },
+    };
   }
 
   #DOMs() {
