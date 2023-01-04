@@ -249,7 +249,6 @@ class Game {
     this.$DIALOG = document.querySelector('#dialog');
     this.$SCORE = document.querySelector('#score');
     this.$TIMER = document.querySelector('#timer');
-    this.$RATING = document.querySelector('#rating');
   }
 
   #eventListeners() {
