@@ -9,7 +9,7 @@ export class Keyboard {
   #handle() {
     window.addEventListener('keydown', (e) => {
       if (!this._context.isGameOver) {
-        if (this._context.canMove === true) {
+        if (this._context.canMove) {
           if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
             this._context.moveToLeft();
           } else if (e.code === 'ArrowUp' || e.code === 'KeyW') {
@@ -23,21 +23,16 @@ export class Keyboard {
       }
 
       if (e.code === 'KeyR') {
-        clearInterval(this._context.interval);
+        this._context.clear();
         this._context.start();
       }
 
       if (e.code === 'KeyP') {
         if (!this._context.isGameOver) {
-          if (this._context.isPaused === true) {
-            this._context.interval = setInterval(
-              this._context._eventLoop.bind(this._context),
-              this._context.SPEED_RATE,
-            );
-            this._context.isPaused = false;
+          if (this._context.isPaused) {
+            this._context.start();
           } else {
-            clearInterval(this._context.interval);
-            this._context.isPaused = true;
+            this._context.stop();
           }
         }
       }
