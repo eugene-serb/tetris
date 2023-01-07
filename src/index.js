@@ -5,7 +5,7 @@ import Score from '@/score.js';
 import Drawer from '@/drawer.js';
 import Matrix from '@/matrix.js';
 import Tetromino from '@/tetromino.js';
-import { getRandomInteger } from '@/support.js';
+import { getRandomInteger } from '@/helpers.js';
 
 class Game {
   constructor() {
