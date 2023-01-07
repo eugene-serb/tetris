@@ -1,11 +1,12 @@
 ﻿'use strict';
 
-import Timer from '@/timer.js';
+import { getRandomInteger } from '@/helpers.js';
 import Score from '@/score.js';
-import Drawer from '@/drawer.js';
+import Timer from '@/timer.js';
 import Matrix from '@/matrix.js';
 import Tetromino from '@/tetromino.js';
-import { getRandomInteger } from '@/helpers.js';
+import Drawer from '@/drawer.js';
+import Keyboard from '@/keyboard.js';
 
 class Game {
   constructor() {
@@ -13,7 +14,7 @@ class Game {
     this.#configurations();
     this.#eventListeners();
 
-    this.#start();
+    this.start();
   }
 
   getTetromino() {
@@ -143,7 +144,7 @@ class Game {
     }
   }
 
-  #start() {
+  start() {
     this.$DIALOG.innerHTML = 'Let\'s have fun!';
 
     this.matrixState = new Matrix(
@@ -172,10 +173,10 @@ class Game {
 
     this.tetromino = this.getTetromino();
 
-    this.interval = setInterval(this.#eventLoop.bind(this), this.SPEED_RATE);
+    this.interval = setInterval(this._eventLoop.bind(this), this.SPEED_RATE);
   }
 
-  #eventLoop() {
+  _eventLoop() {
     this.#update();
     this.#draw();
     this.#eventHandler();
@@ -236,6 +237,10 @@ class Game {
     }
   }
 
+  #eventListeners() {
+    this.keyboard = new Keyboard(this);
+  }
+
   #configurations() {
     this.MATRIX_WIDTH = 10;
     this.MATRIX_HEIGHT = 25;
@@ -256,45 +261,6 @@ class Game {
     this.$DIALOG = document.querySelector('#dialog');
     this.$SCORE = document.querySelector('#score');
     this.$TIMER = document.querySelector('#timer');
-  }
-
-  #eventListeners() {
-    this.#keyboard();
-  }
-
-  #keyboard() {
-    window.addEventListener('keydown', (e) => {
-      if (!this.isGameOver) {
-        if (this.canMove === true) {
-          if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
-            this.moveToLeft();
-          } else if (e.code === 'ArrowUp' || e.code === 'KeyW') {
-            this.rotate();
-          } else if (e.code === 'ArrowRight' || e.code === 'KeyD') {
-            this.moveToRight();
-          } else if (e.code === 'ArrowDown' || e.code === 'KeyS') {
-            this.moveToDown();
-          }
-        }
-      }
-
-      if (e.code === 'KeyR') {
-        clearInterval(this.interval);
-        this.#start();
-      }
-
-      if (e.code === 'KeyP') {
-        if (!this.isGameOver) {
-          if (this.isPaused === true) {
-            this.interval = setInterval(this.#eventLoop.bind(this), this.SPEED_RATE);
-            this.isPaused = false;
-          } else {
-            clearInterval(this.interval);
-            this.isPaused = true;
-          }
-        }
-      }
-    });
   }
 }
 
