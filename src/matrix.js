@@ -1,28 +1,32 @@
-'use strict';
+﻿'use strict';
 
 export class Matrix {
-  constructor({ width = null, height = null, empty = null, matrix = null }) {
-    if (matrix) {
-      this.width = matrix.length;
-      this.height = matrix[0].length;
-      this.empty = empty;
-      this.value = this.generate(this.width, this.height, this.empty);
-      this.value = this.insert(matrix, 0, 0);
+  constructor(width, height, emptyValue, matrix) {
+    this.EMPTY_VALUE = (typeof emptyValue !== 'undefined') ? emptyValue : 0;
+
+    if (matrix && Array.isArray(matrix)) {
+      this.value = this.generate(matrix.length, matrix[0].length, this.EMPTY_VALUE);
+      this.insert(matrix, { x: 0, y: 0});
     } else {
-      this.width = width;
-      this.height = height;
-      this.empty = empty;
-      this.value = this.generate(this.width, this.height, this.empty);
+      this.value = this.generate(width, height, this.EMPTY_VALUE);
     }
   }
 
-  generate(width, height, empty) {
+  generate(width, height, emptyValue) {
+    const w = (width && typeof width === 'number')
+      ? Math.abs(Math.trunc(width)) : 1;
+
+    const h = (height && typeof height === 'number')
+      ? Math.abs(Math.trunc(height)) : 1;
+
+    const e = (typeof emptyValue !== 'undefined') ? emptyValue : 0;
+
     const result = new Array();
 
-    for (let x = 0; x < width; x++) {
-      result[x] = new Array();
-      for (let y = 0; y < height; y++) {
-        result[x][y] = empty;
+    for (let column = 0; column < w; column++) {
+      result[column] = new Array();
+      for (let row = 0; row < h; row++) {
+        result[column][row] = e;
       }
     }
 
@@ -30,111 +34,106 @@ export class Matrix {
   }
 
   clone() {
-    const result = this.generate(
-      this.value.length,
-      this.value[0].length
-    );
-
-    for (let x = 0; x < this.value.length; x++) {
-      for (let y = 0; y < this.value[x].length; y++) {
-        result[x][y] = this.value[x][y];
-      }
-    }
-
-    return new Matrix({ matrix: result });
+    return new Matrix(null, null, this.EMPTY_VALUE, this.copy());
   }
 
   copy() {
     const result = this.generate(
       this.value.length,
-      this.value[0].length
+      this.value[0].length,
+      this.EMPTY_VALUE,
     );
 
-    for (let x = 0; x < this.value.length; x++) {
-      for (let y = 0; y < this.value[x].length; y++) {
-        result[x][y] = this.value[x][y];
+    for (let column = 0; column < this.value.length; column++) {
+      for (let row = 0; row < this.value[column].length; row++) {
+        result[column][row] = this.value[column][row];
       }
     }
 
     return result;
   }
 
-  crop(coordinates) {
-    const width = Math.abs(coordinates[1][0] - coordinates[0][0]);
-    const height = Math.abs(coordinates[1][1] - coordinates[0][1]);
+  crop(start, end) {
+    const width = Math.abs(end.x - start.x);
+    const height = Math.abs(end.y - start.y);
 
-    const result = this.generate(width, height);
+    const result = this.generate(width, height, this.EMPTY_VALUE);
 
-    for (let x = 0; x < width; x++) {
-      for (let y = 0; y < height; y++) {
-        let x2 = coordinates[0][0] + x;
-        let y2 = coordinates[0][1] + y;
-        result[x][y] = this.value[x2][y2];
+    for (let column = 0; column < width; column++) {
+      for (let row = 0; row < height; row++) {
+        const x = start.x + column;
+        const y = start.y + row;
+        result[column][row] = this.value[x][y];
       }
     }
 
-    return result;
+    this.value = result;
   }
 
-  insert(figure, x, y) {
+  insert(matrix, start) {
     const result = this.copy();
 
-    let rx = x;
-    for (let i = 0; i < figure.length; i++) {
-      let ry = y;
-      for (let j = 0; j < figure[0].length; j++) {
-        result[rx][ry] = figure[i][j];
-        ry++;
+    let x = start.x;
+
+    for (let column = 0; column < matrix.length; column++) {
+      let y = start.y;
+
+      for (let row = 0; row < matrix[column].length; row++) {
+        result[x][y] = matrix[column][row];
+
+        y++;
       }
-      rx++;
+
+      x++;
     }
 
-    return result;
+    this.value = result;
   }
 
   reflectX() {
-    return this.copy().reverse();
+    this.value.reverse();
   }
 
   reflectY() {
-    const result = this.generate(
-      this.value.length,
-      this.value[0].length
-    );
-
-    for (let x = 0; x < this.value.length; x++) {
-      result[x] = this.value[x].reverse();
-    }
-
-    return result;
+    this.value.forEach((column) => {
+      column.reverse();
+    });
   }
 
   rotateLeft() {
-    const result = this.generate(this.value[0].length, this.value.length);
+    const result = this.generate(
+      this.value[0].length,
+      this.value.length,
+      this.EMPTY_VALUE,
+    );
 
-    for (let x = 0; x < this.value.length; x++) {
-      for (let y = 0; y < this.value[x].length; y++) {
-        let x2 = this.value[x].length - 1 - y;
-        let y2 = x;
-        result[x2][y2] = this.value[x][y];
+    for (let column = 0; column < this.value.length; column++) {
+      for (let row = 0; row < this.value[column].length; row++) {
+        let x = this.value[column].length - 1 - row;
+        let y = column;
+        result[x][y] = this.value[column][row];
       }
     }
 
-    return result;
+    this.value = result;
   }
 
   rotateRight() {
-    const result = this.generate(this.value[0].length, this.value.length);
+    const result = this.generate(
+      this.value[0].length,
+      this.value.length,
+      this.EMPTY_VALUE,
+    );
 
-    for (let x = 0; x < this.value.length; x++) {
-      for (let y = 0; y < this.value[x].length; y++) {
-        let x2 = y;
-        let y2 = this.value.length - 1 - x;
-        result[x2][y2] = this.value[x][y];
+    for (let column = 0; column < this.value.length; column++) {
+      for (let row = 0; row < this.value[column].length; row++) {
+        let x = row;
+        let y = this.value.length - 1 - column;
+        result[x][y] = this.value[column][row];
       }
     }
 
-    return result;
+    this.value = result;
   }
 }
 

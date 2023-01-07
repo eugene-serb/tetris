@@ -27,15 +27,15 @@ export class Tetromino {
   }
 
   rotateLeft() {
-    this.matrix = new Matrix({ matrix: this.matrix.rotateLeft() })
+    this.matrix.rotateLeft();
   }
 
   rotateRight() {
-    this.matrix = new Matrix({ matrix: this.matrix.rotateRight() })
+    this.matrix.rotateRight();
   }
 
   #generate() {
-    return new Matrix({ matrix: this.#generateMatrix() });
+    return new Matrix(null, null, this.empty, this.#generateMatrix());
   }
 
   #generateMatrix() {

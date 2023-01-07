@@ -1,18 +1,18 @@
 {
   "name": "tetris",
-  "version": "1.0.0",
+  "version": "1.0.10",
   "description": "Tetris in JavaScript, HTML and CSS",
   "keywords": [
     "tetris",
     "tetris-game"
   ],
   "license": "GNU GPL v3",
-  "homepage": "https://github.com/eugene-serb/tetris#readme",
   "author": {
     "name": "Eugene Serb",
     "email": "eugene.serb@gmail.com",
     "url": "https://eugene-serb.github.io/"
   },
+  "homepage": "https://eugene-serb.github.io/tetris/",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/eugene-serb/tetris.git"
@@ -21,21 +21,23 @@
     "url": "https://github.com/eugene-serb/tetris/issues"
   },
   "private": true,
+  "main": "index.js",
   "scripts": {
     "start": "webpack --mode development --watch",
     "build": "webpack --mode production",
     "build:dev": "webpack --mode development",
     "lint": "eslint src",
-    "test": "jest"
+    "test": "jest tests"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.7",
+    "@babel/core": "^7.20.12",
     "@babel/eslint-parser": "^7.19.1",
     "@babel/preset-env": "^7.20.2",
-    "babel-loader": "^9.1.0",
+    "babel-jest": "^29.3.1",
+    "babel-loader": "^9.1.2",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",
-    "eslint": "^8.30.0",
+    "eslint": "^8.31.0",
     "eslint-cli": "^1.1.1",
     "eslint-webpack-plugin": "^3.2.0",
     "html-webpack-plugin": "^5.5.0",
