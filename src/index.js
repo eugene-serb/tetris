@@ -156,7 +156,7 @@ class Game {
       [[0, 0], [this.MAP_WIDTH, this.MAP_HEIGHT]]);
 
     this.drawer = new Drawer(this.$MAP, this.matrixDraw);
-    this.timer = new Timer(this.$TIMER);
+    this.timer = new Timer();
     this.score = new Score();
 
     this.isGameOver = false;
@@ -188,6 +188,9 @@ class Game {
   }
 
   #draw() {
+    this.$SCORE.innerText = `Score: ${this.score.value}`;
+    this.$TIMER.innerText = `Time: ${this.timer.value}`;
+
     this.matrixDraw = new Matrix({
       matrix: this.matrixRender.crop([[0, 0], [this.MAP_WIDTH, this.MAP_HEIGHT]]),
       empty: this.EMPTY_CELL,
@@ -195,9 +198,6 @@ class Game {
     this.matrixDraw.matrix = this.matrixDraw.reflectY();
     this.drawer.matrix = this.matrixDraw.value;
 
-    this.$SCORE.innerText = `Score: ${this.score.value}`;
-
-    this.timer.draw();
     this.drawer.draw();
   }
 
