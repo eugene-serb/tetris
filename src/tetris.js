@@ -1,6 +1,7 @@
 ﻿'use strict';
 
 import { getRandomInteger } from '@/helpers.js';
+import Gameloop from '@/gameloop.js';
 import Score from '@/score.js';
 import Timer from '@/timer.js';
 import Matrix from '@/matrix.js';
@@ -8,8 +9,16 @@ import Tetromino from '@/tetromino.js';
 import Drawer from '@/drawer.js';
 import Keyboard from '@/keyboard.js';
 
-export class Tetris {
-  constructor() {
+export class Tetris extends Gameloop {
+  constructor(params) {
+    super();
+
+    this._params = params;
+
+    this.SPEED_RATE = (this._params?.speedRate &&
+      typeof this._params?.speedRate === 'number'
+    ) ? this._params?.speedRate : 250;
+
     this.#DOMs();
     this.#configurations();
     this.#eventListeners();
@@ -27,7 +36,7 @@ export class Tetris {
   checkEndGame() {
     this.matrixState.value.forEach((column) => {
       if (column[19].exist) {
-        this.isGameOver = true;
+        this.setGameOver();
       }
     });
   }
@@ -144,33 +153,16 @@ export class Tetris {
   }
 
   start() {
-    if (this.isGameOver) {
-      this.clear();
-    }
-
-    this.isPaused = false;
+    super.start();
     this.interval = setInterval(this.#eventLoop.bind(this), this.SPEED_RATE);
   }
 
-  stop() {
-    this.isPaused = true;
-    clearTimeout(this.interval);
-  }
-
-  setGameOver() {
-    this.stop();
-    this.isGameOver = true;
-  }
-
   clear() {
-    this.stop();
+    super.clear();
     this.#init();
   }
 
   #init() {
-    this.interval = null;
-    this.isGameOver = false;
-    this.isPaused = false;
     this.canMove = true;
     this.isSettled = false;
 
@@ -268,7 +260,6 @@ export class Tetris {
     this.MATRIX_HEIGHT = 25;
     this.MAP_WIDTH = 10;
     this.MAP_HEIGHT = 20;
-    this.SPEED_RATE = 250;
     this.EMPTY_CELL = {
       exist: false,
       color: {
