@@ -157,7 +157,7 @@ class Game {
 
     this.drawer = new Drawer(this.$MAP, this.matrixDraw);
     this.timer = new Timer(this.$TIMER);
-    this.score = new Score(this.$SCORE);
+    this.score = new Score();
 
     this.isGameOver = false;
     this.isPaused = false;
@@ -195,8 +195,9 @@ class Game {
     this.matrixDraw.matrix = this.matrixDraw.reflectY();
     this.drawer.matrix = this.matrixDraw.value;
 
+    this.$SCORE.innerText = `Score: ${this.score.value}`;
+
     this.timer.draw();
-    this.score.draw();
     this.drawer.draw();
   }
 
