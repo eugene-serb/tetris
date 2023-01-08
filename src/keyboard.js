@@ -9,16 +9,14 @@ export class Keyboard {
   #handle() {
     window.addEventListener('keydown', (e) => {
       if (!this._context.isGameOver) {
-        if (this._context.canMove) {
-          if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
-            this._context.moveToLeft();
-          } else if (e.code === 'ArrowUp' || e.code === 'KeyW') {
-            this._context.rotate();
-          } else if (e.code === 'ArrowRight' || e.code === 'KeyD') {
-            this._context.moveToRight();
-          } else if (e.code === 'ArrowDown' || e.code === 'KeyS') {
-            this._context.moveToDown();
-          }
+        if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
+          this._context.moveToLeft();
+        } else if (e.code === 'ArrowUp' || e.code === 'KeyW') {
+          this._context.rotate();
+        } else if (e.code === 'ArrowRight' || e.code === 'KeyD') {
+          this._context.moveToRight();
+        } else if (e.code === 'ArrowDown' || e.code === 'KeyS') {
+          this._context.moveToDown();
         }
       }
 

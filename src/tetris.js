@@ -8,6 +8,7 @@ import Matrix from '@/matrix.js';
 import Tetromino from '@/tetromino.js';
 import Drawer from '@/drawer.js';
 import Keyboard from '@/keyboard.js';
+import Gamepad from '@/gamepad.js';
 
 export class Tetris extends Gameloop {
   constructor(params) {
@@ -106,49 +107,57 @@ export class Tetris extends Gameloop {
   }
 
   rotate() {
-    this.tetromino.rotateRight();
+    if (this.canMove) {
+      this.tetromino.rotateRight();
 
-    if (this.isValidMove(
-      this.tetromino.matrix.value,
-      this.tetromino.column,
-      this.tetromino.row,
-    )) {
-      this.#draw();
-    } else {
-      this.tetromino.rotateLeft();
+      if (this.isValidMove(
+        this.tetromino.matrix.value,
+        this.tetromino.column,
+        this.tetromino.row,
+      )) {
+        this.#draw();
+      } else {
+        this.tetromino.rotateLeft();
+      }
     }
   }
 
   moveToLeft() {
-    if (this.isValidMove(
-      this.tetromino.matrix.value,
-      this.tetromino.column - 1,
-      this.tetromino.row,
-    )) {
-      this.tetromino.toLeft();
-      this.#draw();
+    if (this.canMove) {
+      if (this.isValidMove(
+        this.tetromino.matrix.value,
+        this.tetromino.column - 1,
+        this.tetromino.row,
+      )) {
+        this.tetromino.toLeft();
+        this.#draw();
+      }
     }
   }
 
   moveToRight() {
-    if (this.isValidMove(
-      this.tetromino.matrix.value,
-      this.tetromino.column + 1,
-      this.tetromino.row,
-    )) {
-      this.tetromino.toRight();
-      this.#draw();
+    if (this.canMove) {
+      if (this.isValidMove(
+        this.tetromino.matrix.value,
+        this.tetromino.column + 1,
+        this.tetromino.row,
+      )) {
+        this.tetromino.toRight();
+        this.#draw();
+      }
     }
   }
 
   moveToDown() {
-    if (this.isValidMove(
-      this.tetromino.matrix.value,
-      this.tetromino.column,
-      this.tetromino.row - 1,
-    )) {
-      this.tetromino.toDown();
-      this.#draw();
+    if (this.canMove) {
+      if (this.isValidMove(
+        this.tetromino.matrix.value,
+        this.tetromino.column,
+        this.tetromino.row - 1,
+      )) {
+        this.tetromino.toDown();
+        this.#draw();
+      }
     }
   }
 
@@ -163,7 +172,6 @@ export class Tetris extends Gameloop {
   }
 
   #init() {
-    this.canMove = true;
     this.isSettled = false;
 
     this.$DIALOG.innerHTML = 'Let\'s have fun!';
@@ -253,6 +261,7 @@ export class Tetris extends Gameloop {
 
   #eventListeners() {
     this.keyboard = new Keyboard(this);
+    this.gamepad = new Gamepad(this);
   }
 
   #configurations() {
