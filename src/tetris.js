@@ -107,55 +107,69 @@ export class Tetris extends Gameloop {
   }
 
   rotate() {
-    this.tetromino.rotateRight();
+    if (this.canMove) {
+      this.tetromino.rotateRight();
 
-    if (this.isValidMove(
-      this.tetromino.matrix.value,
-      this.tetromino.column,
-      this.tetromino.row,
-    )) {
-      this.#draw();
-    } else {
-      this.tetromino.rotateLeft();
+      if (this.isValidMove(
+        this.tetromino.matrix.value,
+        this.tetromino.column,
+        this.tetromino.row,
+      )) {
+        this.#draw();
+      } else {
+        this.tetromino.rotateLeft();
+      }
     }
   }
 
   moveToLeft() {
-    if (this.isValidMove(
-      this.tetromino.matrix.value,
-      this.tetromino.column - 1,
-      this.tetromino.row,
-    )) {
-      this.tetromino.toLeft();
-      this.#draw();
+    if (this.canMove) {
+      if (this.isValidMove(
+        this.tetromino.matrix.value,
+        this.tetromino.column - 1,
+        this.tetromino.row,
+      )) {
+        this.tetromino.toLeft();
+        this.#draw();
+      }
     }
   }
 
   moveToRight() {
-    if (this.isValidMove(
-      this.tetromino.matrix.value,
-      this.tetromino.column + 1,
-      this.tetromino.row,
-    )) {
-      this.tetromino.toRight();
-      this.#draw();
+    if (this.canMove) {
+      if (this.isValidMove(
+        this.tetromino.matrix.value,
+        this.tetromino.column + 1,
+        this.tetromino.row,
+      )) {
+        this.tetromino.toRight();
+        this.#draw();
+      }
     }
   }
 
   moveToDown() {
-    if (this.isValidMove(
-      this.tetromino.matrix.value,
-      this.tetromino.column,
-      this.tetromino.row - 1,
-    )) {
-      this.tetromino.toDown();
-      this.#draw();
+    if (this.canMove) {
+      if (this.isValidMove(
+        this.tetromino.matrix.value,
+        this.tetromino.column,
+        this.tetromino.row - 1,
+      )) {
+        this.tetromino.toDown();
+        this.#draw();
+      }
     }
   }
 
   start() {
     super.start();
+    this.canMove = true;
     this.interval = setInterval(this.#eventLoop.bind(this), this.SPEED_RATE);
+  }
+
+  stop() {
+    super.stop();
+    this.canMove = false;
   }
 
   clear() {
