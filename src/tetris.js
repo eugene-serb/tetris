@@ -8,6 +8,7 @@ import Matrix from '@/matrix.js';
 import Tetromino from '@/tetromino.js';
 import Drawer from '@/drawer.js';
 import Keyboard from '@/keyboard.js';
+import Gamepad from '@/gamepad.js';
 
 export class Tetris extends Gameloop {
   constructor(params) {
@@ -253,6 +254,7 @@ export class Tetris extends Gameloop {
 
   #eventListeners() {
     this.keyboard = new Keyboard(this);
+    this.gamepad = new Gamepad(this);
   }
 
   #configurations() {
