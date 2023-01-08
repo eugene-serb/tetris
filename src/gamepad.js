@@ -50,7 +50,7 @@ export class Gamepad {
 
   #handle(button) {
     if (this._keypressCooldown >= this.KEYPRESS_INTERRUPT) {
-      if (button === 9) {
+      if (button === 8) {
         if (this._context.isPaused) {
           this._context.start();
           this._keypressCooldown = 0;
@@ -60,14 +60,14 @@ export class Gamepad {
         }
       }
 
-      if (button === 0) {
-        this._context.rotate();
+      if (button === 9) {
+        this._context.clear();
+        this._context.start();
         this._keypressCooldown = 0;
       }
 
-      if (button === 3) {
-        this._context.clear();
-        this._context.start();
+      if (button === 0) {
+        this._context.rotate();
         this._keypressCooldown = 0;
       }
 
