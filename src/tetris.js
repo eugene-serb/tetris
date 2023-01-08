@@ -163,13 +163,7 @@ export class Tetris extends Gameloop {
 
   start() {
     super.start();
-    this.canMove = true;
     this.interval = setInterval(this.#eventLoop.bind(this), this.SPEED_RATE);
-  }
-
-  stop() {
-    super.stop();
-    this.canMove = false;
   }
 
   clear() {
@@ -178,7 +172,6 @@ export class Tetris extends Gameloop {
   }
 
   #init() {
-    this.canMove = true;
     this.isSettled = false;
 
     this.$DIALOG.innerHTML = 'Let\'s have fun!';
