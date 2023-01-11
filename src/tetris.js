@@ -2,11 +2,12 @@
 
 import { getRandomInteger } from '@/helpers.js';
 import Gameloop from '@/gameloop.js';
-import Score from '@/score.js';
-import Timer from '@/timer.js';
 import Matrix from '@/matrix.js';
 import Tetromino from '@/tetromino.js';
 import Drawer from '@/drawer.js';
+import Score from '@/score.js';
+import Timer from '@/timer.js';
+import Rating from '@/rating.js';
 import Keyboard from '@/keyboard.js';
 import Gamepad from '@/gamepad.js';
 
@@ -19,6 +20,10 @@ export class Tetris extends Gameloop {
     this.SPEED_RATE = (this._params?.speedRate &&
       typeof this._params?.speedRate === 'number'
     ) ? this._params?.speedRate : 250;
+
+    this.KEY_RATING = (this._params?.keyRating &&
+      typeof this._params?.keyRating === 'string'
+    ) ? this._params?.keyRating : 'tetris';
 
     this.#DOMs();
     this.#configurations();
@@ -166,15 +171,56 @@ export class Tetris extends Gameloop {
     this.interval = setInterval(this.#eventLoop.bind(this), this.SPEED_RATE);
   }
 
+  setGameOver() {
+    super.setGameOver();
+
+    const score = this.score.value;
+    const time = this.timer.value;
+
+    this.rating.add(score, time);
+    this.drawRating();
+  }
+
   clear() {
     super.clear();
     this.#init();
+  }
+
+  drawRating() {
+    this.$RATING.innerHTML = '';
+
+    const rating = this.rating.value;
+
+    for (let i = 0; i < rating.length && i < 10; i++) {
+      const row = document.createElement('tr');
+      const a = document.createElement('td');
+      const b = document.createElement('td');
+      const c = document.createElement('td');
+      const d = document.createElement('td');
+
+      const time = new Date(rating[i].date)
+
+      a.innerText = i + 1;
+      b.innerText = rating[i].score;
+      c.innerText = rating[i].time;
+      d.innerText = time.toLocaleDateString();
+
+      row.append(a, b, c, d);
+
+      this.$RATING.appendChild(row);
+    }
   }
 
   #init() {
     this.isSettled = false;
 
     this.$DIALOG.innerHTML = 'Let\'s have fun!';
+
+    this.rating = new Rating(this.KEY_RATING);
+    this.drawRating();
+
+    this.timer = new Timer();
+    this.score = new Score();
 
     this.matrixState = new Matrix(
       this.MATRIX_WIDTH,
@@ -192,8 +238,6 @@ export class Tetris extends Gameloop {
     this.matrixDraw.reflectY();
 
     this.drawer = new Drawer(this.$MAP, this.matrixDraw.value);
-    this.timer = new Timer();
-    this.score = new Score();
 
     this.tetromino = this.getTetromino();
   }
@@ -283,6 +327,7 @@ export class Tetris extends Gameloop {
     this.$DIALOG = document.querySelector('#dialog');
     this.$SCORE = document.querySelector('#score');
     this.$TIMER = document.querySelector('#timer');
+    this.$RATING = document.querySelector('#rating');
   }
 }
 
