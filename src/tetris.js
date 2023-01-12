@@ -40,11 +40,12 @@ export class Tetris extends Gameloop {
   }
 
   checkEndGame() {
-    this.matrixState.value.forEach((column) => {
-      if (column[19].exist) {
+    for (let i = 0; i < this.matrixState.value.length; i++) {
+      if (this.matrixState.value[i][19].exist) {
         this.setGameOver();
+        break;
       }
-    });
+    }
   }
 
   cleanRows() {
