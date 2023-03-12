@@ -10,6 +10,7 @@ import Timer from '@/timer.js';
 import Rating from '@/rating.js';
 import Keyboard from '@/keyboard.js';
 import Gamepad from '@/gamepad.js';
+import Touchscreen from '@/touchscreen.js';
 
 export class Tetris extends Gameloop {
   constructor(params) {
@@ -307,6 +308,7 @@ export class Tetris extends Gameloop {
   #eventListeners() {
     this.keyboard = new Keyboard(this);
     this.gamepad = new Gamepad(this);
+    this.touchscreen = new Touchscreen(this, this.$MAP);
   }
 
   #configurations() {
