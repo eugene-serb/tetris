@@ -18,13 +18,15 @@ export class Tetris extends Gameloop {
 
     this._params = params;
 
-    this.SPEED_RATE = (this._params?.speedRate &&
-      typeof this._params?.speedRate === 'number'
-    ) ? this._params?.speedRate : 250;
+    this.SPEED_RATE =
+      this._params?.speedRate && typeof this._params?.speedRate === 'number'
+        ? this._params?.speedRate
+        : 250;
 
-    this.KEY_RATING = (this._params?.keyRating &&
-      typeof this._params?.keyRating === 'string'
-    ) ? this._params?.keyRating : 'tetris';
+    this.KEY_RATING =
+      this._params?.keyRating && typeof this._params?.keyRating === 'string'
+        ? this._params?.keyRating
+        : 'tetris';
 
     this.#DOMs();
     this.#configurations();
@@ -67,7 +69,7 @@ export class Tetris extends Gameloop {
             [this.EMPTY_CELL],
           );
         });
-        
+
         this.score.increase(1);
 
         row--;
@@ -98,14 +100,19 @@ export class Tetris extends Gameloop {
   isValidMove(matrix, toColumn, toRow) {
     for (let column = 0; column < matrix.length; column++) {
       for (let row = 0; row < matrix[column].length; row++) {
-        if (toColumn + column >= this.matrixState.value.length ||
+        if (
+          toColumn + column >= this.matrixState.value.length ||
           toRow + row >= this.matrixState.value[0].length ||
-          toColumn + column < 0 || toRow + row < 0) {
+          toColumn + column < 0 ||
+          toRow + row < 0
+        ) {
           return false;
         }
 
-        if (matrix[column][row].exist &&
-          this.matrixState.value[toColumn + column][toRow + row].exist) {
+        if (
+          matrix[column][row].exist &&
+          this.matrixState.value[toColumn + column][toRow + row].exist
+        ) {
           return false;
         }
       }
@@ -117,11 +124,9 @@ export class Tetris extends Gameloop {
     if (this.canMove) {
       this.tetromino.rotateRight();
 
-      if (this.isValidMove(
-        this.tetromino.matrix.value,
-        this.tetromino.column,
-        this.tetromino.row,
-      )) {
+      if (
+        this.isValidMove(this.tetromino.matrix.value, this.tetromino.column, this.tetromino.row)
+      ) {
         this.#draw();
       } else {
         this.tetromino.rotateLeft();
@@ -131,11 +136,9 @@ export class Tetris extends Gameloop {
 
   moveToLeft() {
     if (this.canMove) {
-      if (this.isValidMove(
-        this.tetromino.matrix.value,
-        this.tetromino.column - 1,
-        this.tetromino.row,
-      )) {
+      if (
+        this.isValidMove(this.tetromino.matrix.value, this.tetromino.column - 1, this.tetromino.row)
+      ) {
         this.tetromino.toLeft();
         this.#draw();
       }
@@ -144,11 +147,9 @@ export class Tetris extends Gameloop {
 
   moveToRight() {
     if (this.canMove) {
-      if (this.isValidMove(
-        this.tetromino.matrix.value,
-        this.tetromino.column + 1,
-        this.tetromino.row,
-      )) {
+      if (
+        this.isValidMove(this.tetromino.matrix.value, this.tetromino.column + 1, this.tetromino.row)
+      ) {
         this.tetromino.toRight();
         this.#draw();
       }
@@ -157,11 +158,9 @@ export class Tetris extends Gameloop {
 
   moveToDown() {
     if (this.canMove) {
-      if (this.isValidMove(
-        this.tetromino.matrix.value,
-        this.tetromino.column,
-        this.tetromino.row - 1,
-      )) {
+      if (
+        this.isValidMove(this.tetromino.matrix.value, this.tetromino.column, this.tetromino.row - 1)
+      ) {
         this.tetromino.toDown();
         this.#draw();
       }
@@ -200,7 +199,7 @@ export class Tetris extends Gameloop {
       const c = document.createElement('td');
       const d = document.createElement('td');
 
-      const time = new Date(rating[i].date)
+      const time = new Date(rating[i].date);
 
       a.innerText = i + 1;
       b.innerText = rating[i].score;
@@ -216,7 +215,7 @@ export class Tetris extends Gameloop {
   #init() {
     this.isSettled = false;
 
-    this.$DIALOG.innerHTML = 'Let\'s have fun!';
+    this.$DIALOG.innerHTML = "Let's have fun!";
 
     this.rating = new Rating(this.KEY_RATING);
     this.drawRating();
@@ -224,19 +223,12 @@ export class Tetris extends Gameloop {
     this.timer = new Timer();
     this.score = new Score();
 
-    this.matrixState = new Matrix(
-      this.MATRIX_WIDTH,
-      this.MATRIX_HEIGHT,
-      this.EMPTY_CELL,
-    );
+    this.matrixState = new Matrix(this.MATRIX_WIDTH, this.MATRIX_HEIGHT, this.EMPTY_CELL);
 
     this.matrixRender = this.matrixState.clone();
 
     this.matrixDraw = this.matrixRender.clone();
-    this.matrixDraw.crop(
-      { x: 0, y: 0 },
-      { x: this.MAP_WIDTH, y: this.MAP_HEIGHT },
-    );
+    this.matrixDraw.crop({ x: 0, y: 0 }, { x: this.MAP_WIDTH, y: this.MAP_HEIGHT });
     this.matrixDraw.reflectY();
 
     this.drawer = new Drawer(this.$MAP, this.matrixDraw.value);
@@ -264,10 +256,7 @@ export class Tetris extends Gameloop {
     this.$TIMER.innerText = `Time: ${this.timer.value}`;
 
     this.matrixDraw = this.matrixRender.clone();
-    this.matrixDraw.crop(
-      { x: 0, y: 0 },
-      { x: this.MAP_WIDTH, y: this.MAP_HEIGHT },
-    );
+    this.matrixDraw.crop({ x: 0, y: 0 }, { x: this.MAP_WIDTH, y: this.MAP_HEIGHT });
     this.matrixDraw.reflectY();
 
     this.drawer.matrix = this.matrixDraw.value;
@@ -282,11 +271,9 @@ export class Tetris extends Gameloop {
       clearInterval(this.interval);
     }
 
-    if (!this.isValidMove(
-      this.tetromino.matrix.value,
-      this.tetromino.column,
-      this.tetromino.row - 1,
-    )) {
+    if (
+      !this.isValidMove(this.tetromino.matrix.value, this.tetromino.column, this.tetromino.row - 1)
+    ) {
       this.matrixState = new Matrix(
         null,
         null,

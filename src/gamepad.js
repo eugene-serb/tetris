@@ -83,23 +83,23 @@ export class Gamepad {
         this._keypressCooldown = 0;
       }
 
-    if (button === 0) {
-      this._context.rotate();
-      this._keypressCooldown = 0;
-    }
+      if (button === 0) {
+        this._context.rotate();
+        this._keypressCooldown = 0;
+      }
 
-    if (button === 13) {
-      this._context.moveToDown();
-      this._keypressCooldown = 0;
-    }
+      if (button === 13) {
+        this._context.moveToDown();
+        this._keypressCooldown = 0;
+      }
 
-    if (button === 14) {
-      this._context.moveToLeft();
-      this._keypressCooldown = 0;
-    }
+      if (button === 14) {
+        this._context.moveToLeft();
+        this._keypressCooldown = 0;
+      }
 
-    if (button === 15) {
-      this._context.moveToRight();
+      if (button === 15) {
+        this._context.moveToRight();
         this._keypressCooldown = 0;
       }
     }

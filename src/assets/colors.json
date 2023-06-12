@@ -1,30 +1,30 @@
 [
-	{
-		"light": "#D93B23",
-		"dark": "#992A18"
-	},
-	{
-		"light": "#D99E23",
-		"dark": "#BF8C1F"
-	},
-	{
-		"light": "#FFCB5C",
-		"dark": "#FFC342"
-	},
-	{
-		"light": "#02D978",
-		"dark": "#018C4D"
-	},
-	{
-		"light": "#25D2E6",
-		"dark": "#23C7D9"
-	},
-	{
-		"light": "#240BB3",
-		"dark": "#240BB3"
-	},
-	{
-		"light": "#8932B8",
-		"dark": "#8932B8"
-	}
+  {
+    "light": "#D93B23",
+    "dark": "#992A18"
+  },
+  {
+    "light": "#D99E23",
+    "dark": "#BF8C1F"
+  },
+  {
+    "light": "#FFCB5C",
+    "dark": "#FFC342"
+  },
+  {
+    "light": "#02D978",
+    "dark": "#018C4D"
+  },
+  {
+    "light": "#25D2E6",
+    "dark": "#23C7D9"
+  },
+  {
+    "light": "#240BB3",
+    "dark": "#240BB3"
+  },
+  {
+    "light": "#8932B8",
+    "dark": "#8932B8"
+  }
 ]
