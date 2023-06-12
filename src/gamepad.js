@@ -1,11 +1,20 @@
-﻿'use strict';
+'use strict';
 
+/** Class Gamepad for handle gamepad controls. */
 export class Gamepad {
+  /**
+   * Create Gamepad instance.
+   * @param {any} context Context object for controls.
+   */
   constructor(context) {
     this._context = context;
     this.#init();
   }
 
+  /**
+   * Initialize Gamepad class instance.
+   * @private
+   */
   #init() {
     if (!this.#checkGamepadSupport()) {
       return;
@@ -20,6 +29,10 @@ export class Gamepad {
     this.#connectGamepad();
   }
 
+  /**
+   * Connect gamepad and listen controls.
+   * @private
+   */
   #connectGamepad() {
     window.addEventListener('gamepadconnected', () => {
       const update = () => {
@@ -48,6 +61,10 @@ export class Gamepad {
     });
   }
 
+  /**
+   * Handle controls of the gamepad.
+   * @private
+   */
   #handle(button) {
     if (this._keypressCooldown >= this.KEYPRESS_INTERRUPT) {
       if (button === 8) {
@@ -66,28 +83,32 @@ export class Gamepad {
         this._keypressCooldown = 0;
       }
 
-      if (button === 0) {
-        this._context.rotate();
-        this._keypressCooldown = 0;
-      }
+    if (button === 0) {
+      this._context.rotate();
+      this._keypressCooldown = 0;
+    }
 
-      if (button === 13) {
-        this._context.moveToDown();
-        this._keypressCooldown = 0;
-      }
+    if (button === 13) {
+      this._context.moveToDown();
+      this._keypressCooldown = 0;
+    }
 
-      if (button === 14) {
-        this._context.moveToLeft();
-        this._keypressCooldown = 0;
-      }
+    if (button === 14) {
+      this._context.moveToLeft();
+      this._keypressCooldown = 0;
+    }
 
-      if (button === 15) {
-        this._context.moveToRight();
+    if (button === 15) {
+      this._context.moveToRight();
         this._keypressCooldown = 0;
       }
     }
   }
 
+  /**
+   * Check gamepad's support.
+   * @private
+   */
   #checkGamepadSupport() {
     return 'getGamepads' in window.navigator;
   }
