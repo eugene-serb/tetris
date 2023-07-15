@@ -1,8 +1,8 @@
 'use strict';
 
+import Matrix from '@/engine/matrix.js';
 import tetrominos from '@/assets/tetrominos.json';
 import colors from '@/assets/colors.json';
-import Matrix from '@/matrix.js';
 
 export class Tetromino {
   constructor({ type = null, color = null, column = 5, row = 21, empty = null }) {

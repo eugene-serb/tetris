@@ -1,11 +1,9 @@
-﻿'use strict';
+'use strict';
 
-import Tetris from '@/tetris.js';
+const ENTRIES = require('./entries.js');
+const PAGES = require('./pages.js');
 
-const params = {
-  speedRate: 250,
-  keyRating: 'es:tetris',
+module.exports = {
+  ENTRIES,
+  PAGES,
 };
-
-const tetris = new Tetris(params);
-tetris.start();
