@@ -1,16 +1,16 @@
 ﻿'use strict';
 
-import { getRandomInteger } from '@/helpers.js';
-import Gameloop from '@/gameloop.js';
-import Matrix from '@/matrix.js';
-import Tetromino from '@/tetromino.js';
-import Drawer from '@/drawer.js';
-import Score from '@/score.js';
-import Timer from '@/timer.js';
-import Rating from '@/rating.js';
-import Keyboard from '@/keyboard.js';
-import Gamepad from '@/gamepad.js';
-import Touchscreen from '@/touchscreen.js';
+import { getRandomInteger } from '@/engine/helpers.js';
+import Gameloop from '@/engine/gameloop.js';
+import Matrix from '@/engine/matrix.js';
+import Drawer from '@/engine/drawer.js';
+import Score from '@/engine/score.js';
+import Timer from '@/engine/timer.js';
+import Rating from '@/engine/rating.js';
+import Keyboard from '@/engine/keyboard.js';
+import Gamepad from '@/engine/gamepad.js';
+import Touchscreen from '@/engine/touchscreen.js';
+import Tetromino from '@/game/tetromino.js';
 
 export class Tetris extends Gameloop {
   constructor(params) {
