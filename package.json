@@ -1,6 +1,6 @@
 {
   "name": "tetris",
-  "version": "2.0.6",
+  "version": "2.0.7",
   "description": "Tetris game with support for keyboard, gamepad and touchpad controls. Let's play!",
   "keywords": [
     "tetris",
